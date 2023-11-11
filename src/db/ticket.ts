@@ -1,13 +1,17 @@
 import { Ticket } from "@src/domain/ticket";
-import { database } from "./config";
 import { adapterTicket } from "@src/adapter/ticket";
+import { db } from "./config";
 
 export const dbTicket = {
   getAllTickets,
 }
 
-function getAllTickets(): Ticket[] {
-  const dbTickets = database().tickets as unknown[];
-  const tickets = dbTickets.map((dbTicket) => adapterTicket.dbToDomain(dbTicket));
-  return tickets
+async function getAllTickets(): Promise<Ticket[]> {
+  const dbTickets = await db.ticket.findMany({
+    include: {
+      guest: true,
+    }
+  });
+
+  return dbTickets.map((dbTicket) => adapterTicket.dbToDomain(dbTicket));
 }

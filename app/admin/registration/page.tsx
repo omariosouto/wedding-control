@@ -1,13 +1,19 @@
 import { Button } from "@src/components";
 import { dbGuest } from "@src/db/guest";
+import { dbTicket } from "@src/db/ticket";
 
 
 
 export default async function RegistrationScreen() {
+  const tickets = await dbTicket.getAllTickets();
   const guests = await dbGuest.getAllGuests();
+
+  console.log(tickets);
 
   return (
     <div>
+      <h1>Tickets</h1>
+      <p>You have {tickets.length} and have given X of them to guests</p>
       <h1>Registration</h1>
       <form>
         <button>

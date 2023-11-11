@@ -1,4 +1,4 @@
-import { dbClient } from "./config";
+import { db } from "./config";
 import { Guest } from "@domain/guest";
 import { Uuid } from "common-schema";
 import { adapterGuest } from "@src/adapter/guest";
@@ -9,7 +9,7 @@ export const dbGuest = {
 }
 
 async function getAllGuests(): Promise<Guest[]> {
-  const dbGuests = await dbClient.guest.findMany({
+  const dbGuests = await db.guest.findMany({
     include: {
       tickets: true,
     },
@@ -19,7 +19,7 @@ async function getAllGuests(): Promise<Guest[]> {
 }
 
 async function getGuestById(id: Uuid): Promise<Guest> {
-  const dbGuest = await dbClient.guest.findUnique({
+  const dbGuest = await db.guest.findUnique({
     where: { id },
     include: {
       tickets: true,
