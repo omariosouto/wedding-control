@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prebuild": "npm run db:migration",
     "start": "next start",
     "lint": "next lint",
     "db:admin": "prisma studio",
