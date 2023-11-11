@@ -1,9 +1,10 @@
 import { Guest } from "@src/domain/guest";
-
-function dbToDomain(guest: unknown) {
-  return Guest.parse(guest);
-}
+import { DbGuest } from "@src/wire/db/guest";
 
 export const adapterGuest = {
   dbToDomain,
 };
+
+function dbToDomain(guest: DbGuest) {
+  return Guest.parse(guest);
+}
