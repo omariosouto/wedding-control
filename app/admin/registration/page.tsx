@@ -25,7 +25,7 @@ export default async function RegistrationScreen() {
           <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Under age (7 years)</th>
+            <th>Under age (7 years old)</th>
             <th>Tickets</th>
           </tr>
         </thead>
