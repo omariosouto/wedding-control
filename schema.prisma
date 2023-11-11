@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model Guest {
+  id        String   @id @default(uuid())
+  role      Role     @default(USER)
+  name      String
+  email     String?  @unique
+  phone     String?
+  tickets   Ticket[]
+  underAge  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  confirmed Boolean  @default(false)
+}
+
+model Ticket {
+  id        String   @id @default(uuid())
+  guest     Guest?   @relation(fields: [guestId], references: [id])
+  guestId   String?
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

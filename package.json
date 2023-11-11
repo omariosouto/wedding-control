@@ -7,14 +7,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:admin": "prisma studio",
+    "db:migration": "prisma generate",
+    "db:push": "prisma db push"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.5.2",
+    "@vercel/postgres": "^0.5.1",
     "next": "^14.0.2",
     "next-qrcode": "^2.5.1",
+    "prisma": "^5.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "zod": "^3.22.4"

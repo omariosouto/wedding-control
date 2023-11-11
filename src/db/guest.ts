@@ -22,6 +22,5 @@ function getAllGuests(): Guest[] {
 function getGuestById(id: Uuid): Guest {
   const dbGuests = getAllGuests();
   const guest = dbGuests.find((dbGuest) => Guest.parse(dbGuest).id === id);
-  console.log(guest);
   return guest;
 }
