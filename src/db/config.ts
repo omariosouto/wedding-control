@@ -1,3 +1,6 @@
+import { PrismaClient } from '@prisma/client';
+export const dbClient = new PrismaClient();
+
 // const DB_PATH = path.resolve("_db", "data.json");
 // const DATA = JSON.parse(fs.readFileSync(DB_PATH, { encoding: "utf-8" }));
 const DATA = {

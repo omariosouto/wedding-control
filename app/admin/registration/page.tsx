@@ -1,23 +1,17 @@
-import { PrismaClient } from '@prisma/client';
+import { Button } from "@src/components";
+import { dbGuest } from "@src/db/guest";
 
-async function prismaExample() {
-  const prisma = new PrismaClient();
-  return await prisma.guest.findMany({
-    include: {
-      tickets: true,
-    },
-  });
-}
+
 
 export default async function RegistrationScreen() {
-  const users = await prismaExample();
+  const guests = await dbGuest.getAllGuests();
 
   return (
     <div>
       <h1>Registration</h1>
       <form>
         <button>
-          Add User
+          Add Guest
         </button>
       </form>
       <table>
@@ -29,12 +23,14 @@ export default async function RegistrationScreen() {
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
+          {guests.map(user => (
             <tr key={user.id}>
               <td>{user.id.slice(0, 6)}</td>
               <td>{user.name} {user.underAge && `(👶)`}</td>
               <td>
-                {user.tickets.length}
+                <Button href={`/tickets/${user.id}`}>
+                  {user.tickets.length}
+                </Button>
               </td>
             </tr>
           ))}

@@ -8,8 +8,8 @@ interface TicketsScreenProps {
     guestId: string;
   };
 }
-export default function TicketsScreen({ params }: TicketsScreenProps) {
-  const guest = dbGuest.getGuestById(params.guestId);
+export default async function TicketsScreen({ params }: TicketsScreenProps) {
+  const guest = await dbGuest.getGuestById(params.guestId);
 
   return (
     <div>
