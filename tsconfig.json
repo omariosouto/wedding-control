@@ -24,6 +24,11 @@
     "baseUrl": ".",
     "paths": {
       "@src/*": ["./src/*"],
+      "@db/*": ["./src/db/*"],
+      "@adapter/*": ["./src/adapter/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@components": ["./src/components/index"],
+      "common-schema": ["libs/common-schema.ts"],
     }
   },
   "include": [
