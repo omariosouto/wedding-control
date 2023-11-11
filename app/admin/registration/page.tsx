@@ -7,13 +7,14 @@ import { dbTicket } from "@src/db/ticket";
 export default async function RegistrationScreen() {
   const tickets = await dbTicket.getAllTickets();
   const guests = await dbGuest.getAllGuests();
-
-  console.log(tickets);
+  const givenTickets = guests
+    .filter((guests) => !guests.underAge)
+    .reduce((acc, guest) => acc + guest.tickets.length, 0);
 
   return (
     <div>
       <h1>Tickets</h1>
-      <p>You have {tickets.length} and have given X of them to guests</p>
+      <p>You have <strong>{tickets.length}</strong> and have given {givenTickets} of them to guests</p>
       <h1>Registration</h1>
       <form>
         <button>
