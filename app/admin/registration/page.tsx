@@ -14,7 +14,7 @@ export default async function RegistrationScreen() {
   return (
     <div>
       <h1>Tickets</h1>
-      <p>You have <strong>{tickets.length}</strong> and have given {givenTickets} of them to guests</p>
+      <p>You have <strong>{tickets.length}</strong> and have given <strong>{givenTickets}</strong> of them to guests</p>
       <h1>Registration</h1>
       <form>
         <button>

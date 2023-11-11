@@ -14,7 +14,7 @@ export default async function TicketsScreen({ params }: TicketsScreenProps) {
   return (
     <div>
       <h1>Convites de: {guest.name}</h1>
-      <p>Você tem direito a {guest.tickets.length} convite{guest.tickets.length > 1 && "s"}</p>
+      <p>Você tem direito a {guest.tickets.length} convite {guest.tickets.length > 1 && "s"}</p>
       {guest.confirmed && (
         <>
           <h2>Presença confirmada: {guest.confirmed ? "✅" : "❌"}</h2>
