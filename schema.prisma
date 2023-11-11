@@ -23,6 +23,9 @@ model Guest {
   underAge  Boolean  @default(false)
   createdAt DateTime @default(now())
   confirmed Boolean  @default(false)
+  inviter   Guest?   @relation("InviterInvited", fields: [inviterId], references: [id])
+  inviterId String?
+  invited   Guest[]  @relation("InviterInvited")
 }
 
 model Ticket {
