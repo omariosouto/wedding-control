@@ -1,6 +1,7 @@
 import { Ticket } from "@src/domain/ticket";
 import { adapterTicket } from "@src/adapter/ticket";
 import { db } from "./config";
+import crypto from "crypto";
 
 export const dbTicket = {
   getAllTickets,
