@@ -25,7 +25,6 @@ export default async function RegistrationScreen() {
           <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Under age (7 years old)</th>
             <th>Tickets</th>
           </tr>
         </thead>
@@ -33,8 +32,7 @@ export default async function RegistrationScreen() {
           {users.map(user => (
             <tr key={user.id}>
               <td>{user.id.slice(0, 6)}</td>
-              <td>{user.name}</td>
-              <td>{user.underAge ? "✅" : "❌"}</td>
+              <td>{user.name} {user.underAge && `(👶)`}</td>
               <td>
                 {user.tickets.length}
               </td>
