@@ -1,6 +1,10 @@
 import NextLink from "next/link";
+import { Button as UIButton } from "@ui/ui/button";
 
 interface Tag {
+  className?: string;
+  size?: React.ComponentProps<typeof UIButton>["size"];
+  variant?: React.ComponentProps<typeof UIButton>["variant"];
   children: React.ReactNode;
 }
 
@@ -9,27 +13,28 @@ interface ButtonLink extends Tag {
 }
 
 interface ButtonBase extends Tag {
-  type: "submit";
+  type: "submit" | "button";
 }
 
 type ButtonProps = ButtonLink | ButtonBase;
 
-export function Button({children, ...props}: ButtonProps) {
+export function Button({ children, className, ...props }: ButtonProps) {
   const isButtonLink = "href" in props;
 
-  const className = "text-2xl";
-
-  if(isButtonLink) {
+  if (isButtonLink) {
+    const variant = props.variant || "link";
     return (
-      <NextLink href={props.href} className={className}>
-        {children}
-      </NextLink>
+      <UIButton {...props} className={className} variant={variant} asChild>
+        <NextLink href={props.href}>
+          {children}
+        </NextLink>
+      </UIButton>
     );
   }
 
   return (
-    <button className={className}>
+    <UIButton {...props} className={className}>
       {children}
-    </button>
+    </UIButton>
   );
 }
