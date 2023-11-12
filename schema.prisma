@@ -25,6 +25,9 @@ model Guest {
   confirmed Boolean  @default(false)
   Group     Group?   @relation(fields: [groupId], references: [id])
   groupId   String?
+  inviter   Guest?   @relation("InviterInvited", fields: [inviterId], references: [id])
+  inviterId String?
+  invited   Guest[]  @relation("InviterInvited")
 }
 
 model Ticket {
