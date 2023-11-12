@@ -23,9 +23,8 @@ model Guest {
   underAge  Boolean  @default(false)
   createdAt DateTime @default(now())
   confirmed Boolean  @default(false)
-  inviter   Guest?   @relation("InviterInvited", fields: [inviterId], references: [id])
-  inviterId String?
-  invited   Guest[]  @relation("InviterInvited")
+  Group     Group?   @relation(fields: [groupId], references: [id])
+  groupId   String?
 }
 
 model Ticket {
@@ -34,4 +33,9 @@ model Ticket {
   guestId   String?
   used      Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+model Group {
+  id      String  @id @default(uuid())
+  members Guest[]
 }
