@@ -16,6 +16,9 @@ const guestSkeleton = {
   underAge: s.boolean(),
   tickets: s.array(GuestTicket),
   confirmed: s.boolean(),
+  inviter: s.object({
+    name: s.string(),
+  }).optional().nullable(),
 };
 
 export const Guest = s.object(guestSkeleton).required();

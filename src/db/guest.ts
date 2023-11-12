@@ -12,7 +12,13 @@ async function getAllGuests(): Promise<Guest[]> {
   const dbGuests = await db.guest.findMany({
     include: {
       tickets: true,
+      inviter: true,
     },
+    where: {
+      NOT: {
+        role: "ADMIN",
+      }
+    }
   });
   const guests = dbGuests.map((dbGuest) => adapterGuest.dbToDomain(dbGuest));
   return guests;

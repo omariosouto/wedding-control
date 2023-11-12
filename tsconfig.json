@@ -28,6 +28,7 @@
       "@adapter/*": ["./src/adapter/*"],
       "@domain/*": ["./src/domain/*"],
       "@components": ["./src/components/index"],
+      "@infra/*": ["./src/infra/*"],
       "common-schema": ["libs/common-schema.ts"],
     }
   },
