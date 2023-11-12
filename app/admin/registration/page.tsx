@@ -48,6 +48,7 @@ export default async function RegistrationScreen() {
           <tr>
             <th>#</th>
             <th>Name</th>
+            <th>Contact</th>
             <th>Tickets</th>
             <th>Invited By</th>
             <th>Confirmed</th>
@@ -59,6 +60,11 @@ export default async function RegistrationScreen() {
             <tr key={guest.id}>
               <td>{maskId(guest.id)}</td>
               <td>{guest.name} {guest.underAge && `(👶)`}</td>
+              <td>
+                {guest.email}
+                <br />
+                {guest.phone}
+              </td>
               <td>
                 {guest.underAge && (
                   "N/A"

@@ -13,6 +13,7 @@ const guestSkeleton = {
   id: s.string(),
   name: s.string(),
   email: s.string().optional().nullable(),
+  phone: s.string().optional().nullable(),
   underAge: s.boolean(),
   tickets: s.array(GuestTicket),
   confirmed: s.boolean(),
