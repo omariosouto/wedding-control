@@ -9,6 +9,8 @@
     "prebuild": "npm run db:migration",
     "start": "next start",
     "lint": "next lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "db:admin": "prisma studio",
     "db:migration": "prisma generate",
     "db:push": "prisma db push"
@@ -29,6 +31,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.1.0",
+    "@types/jest": "^29.5.8",
     "@types/node": "20.9.0",
     "@types/react": "18.2.37",
     "autoprefixer": "^10.4.16",

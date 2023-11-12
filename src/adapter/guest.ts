@@ -5,6 +5,6 @@ export const adapterGuest = {
   dbToDomain,
 };
 
-function dbToDomain(guest: DbGuest) {
+function dbToDomain(guest: DbGuest): Guest {
   return Guest.parse(guest);
 }
