@@ -1,4 +1,16 @@
-import { Button, Text, Box } from "@src/components";
+import {
+  Button,
+  Text,
+  Box,
+  Table,
+  TableCaption,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+  Separator,
+} from "@src/components";
 import { maskId } from "@infra/str";
 import { dbGuest } from "@src/db/guest";
 import { dbTicket } from "@src/db/ticket";
@@ -16,9 +28,9 @@ export default async function RegistrationScreen() {
   const groups = logicGuest.getGroups(guests);
 
   const stats = [
-    { name: 'Total Tickets', stat: tickets.length, change: `${givenTickets}/${tickets.length}`, changeType: 'increase' },
-    { name: 'Mario', stat: totalGuestsInvitedBy.husband, change: `${totalGuestsInvitedBy.husband}/${tickets.length / 2}`, changeType: 'increase' },
-    { name: 'Amanda', stat: totalGuestsInvitedBy.wife, change: `${totalGuestsInvitedBy.wife}/${tickets.length / 2}`, changeType: 'decrease' },
+    { name: 'Total Tickets', stat: tickets.length, change: `${givenTickets}/${tickets.length}`, limit: givenTickets < tickets.length ? 'avaiable' : 'soldout' },
+    { name: 'Mario', stat: totalGuestsInvitedBy.husband, change: `${totalGuestsInvitedBy.husband}/${tickets.length / 2}`, limit: totalGuestsInvitedBy.husband < tickets.length / 2 ? 'avaiable' : 'soldout' },
+    { name: 'Amanda', stat: totalGuestsInvitedBy.wife, change: `${totalGuestsInvitedBy.wife}/${tickets.length / 2}`, limit: totalGuestsInvitedBy.wife < tickets.length / 2 ? 'avaiable' : 'soldout' },
   ];
 
   return (
@@ -39,11 +51,11 @@ export default async function RegistrationScreen() {
 
                 <div
                   className={cn(
-                    item.changeType === 'increase' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800',
+                    item.limit === 'avaiable' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800',
                     'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0'
                   )}
                 >
-                  <span className="sr-only"> {item.changeType === 'increase' ? 'Increased' : 'Decreased'} by </span>
+                  <span className="sr-only"> {item.limit === 'avaiable' ? 'Avaiable' : 'Sold Out'} by </span>
                   {item.change}
                 </div>
               </dd>
@@ -51,43 +63,41 @@ export default async function RegistrationScreen() {
           ))}
         </dl>
 
-        {/* <Box tag="ul">
-          <Text tag="li"><strong>Mario</strong> has invited: {totalGuestsInvitedBy.husband}</Text>
-          <Text tag="li"><strong>Amanda</strong> has invited: {totalGuestsInvitedBy.wife}</Text>
-        </Box> */}
         <Button href="/admin/registration/new-guest" variant="default" size="sm">
           Add New Guest
         </Button>
       </Box>
 
 
-      <hr className="my-4" />
+      <Separator className="my-4" />
+
       <Text tag="h2" className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight">
         All Guests
       </Text>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Contact</th>
-            <th>Tickets</th>
-            <th>Invited By</th>
-            <th>Confirmed</th>
-            <th>Group</th>
-          </tr>
-        </thead>
-        <tbody>
+
+      <Table>
+        <TableCaption>A list of the wedding guests.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>#</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Contact</TableHead>
+            <TableHead>Tickets</TableHead>
+            <TableHead>Invited By</TableHead>
+            <TableHead>Confirmed</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {guests.map(guest => (
-            <tr key={guest.id}>
-              <td>{maskId(guest.id)}</td>
-              <td>{guest.name} {guest.underAge && `(👶)`}</td>
-              <td>
+            <TableRow key={guest.id}>
+              <TableCell>{maskId(guest.id)}</TableCell>
+              <TableCell>{guest.name} {guest.underAge && `(👶)`}</TableCell>
+              <TableCell>
                 {guest.email}
                 <br />
                 {guest.phone}
-              </td>
-              <td>
+              </TableCell>
+              <TableCell>
                 {guest.underAge && (
                   "N/A"
                 )}
@@ -96,33 +106,51 @@ export default async function RegistrationScreen() {
                     {guest.tickets.length}
                   </Button>
                 )}
-              </td>
-              <td>
+              </TableCell>
+              <TableCell>
                 {guest.inviter.name}
-              </td>
-              <td>
-                {guest.confirmed ? "Confirmed" : "Not Confirmed"}
-              </td>
-              <td>
-                {Boolean(guest.group) ? "✅" : "❌"}
-              </td>
-            </tr>
+              </TableCell>
+              <TableCell className="text-center">
+                {guest.confirmed ? "✅" : "🚧"}
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
+
+      <Separator className="my-4" />
+
       <Text tag="h2" className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight">
         Groups
       </Text>
-      <ul>
-        {groups.map((group, index) => (
-          <li>
-            #{(index + 1).toString().padStart(2)} - {group.map(guest => guest.name).join(", ")} [{guests.reduce((confirmed, guest) => {
-              if (confirmed) return true;
-              return guest.confirmed;
-            }, false) ? "Confirmed" : "Not Confirmed"}]
-          </li>
-        ))}
-      </ul>
+      <Table>
+        <TableCaption>A list of the wedding guests groups.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>#</TableHead>
+            <TableHead>Group Members</TableHead>
+            <TableHead className="text-center">Confirmation Status</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {groups.map((group, index) => (
+            <TableRow>
+              <TableCell>
+                {(index + 1).toString().padStart(2)}
+              </TableCell>
+              <TableCell>
+                {group.map(guest => guest.name).join(", ")}
+              </TableCell>
+              <TableCell className="text-center">
+                {guests.reduce((confirmed, guest) => {
+                  if (confirmed) return true;
+                  return guest.confirmed;
+                }, false) ? "✅" : "🚧"}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </Box>
   );
 }
