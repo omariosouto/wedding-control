@@ -34,6 +34,15 @@ async function getGuestById(id: Uuid): Promise<Guest> {
     where: { id },
     include: {
       tickets: true,
+      group: {
+        include: {
+          members: {
+            include: {
+              tickets: true,
+            }
+          },
+        }
+      }
     },
   });
   return Guest.parse(dbGuest);

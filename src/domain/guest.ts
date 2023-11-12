@@ -23,7 +23,10 @@ const guestSkeleton = {
   group: s.object({
     id: s.string(),
     members: s.array(s.object({
+      id: s.string(),
       name: s.string(),
+      underAge: s.boolean(),
+      tickets: s.array(GuestTicket).optional().nullable(),
     })),
   }).optional().nullable(),
 };

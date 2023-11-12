@@ -143,7 +143,7 @@ export default async function RegistrationScreen() {
             </TableHeader>
             <TableBody>
               {groups.map((group, index) => (
-                <TableRow>
+                <TableRow key={`group__${index}`}>
                   <TableCell>
                     {(index + 1).toString().padStart(2)}
                   </TableCell>
