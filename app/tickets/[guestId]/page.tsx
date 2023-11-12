@@ -10,21 +10,22 @@ interface TicketsScreenProps {
 }
 export default async function TicketsScreen({ params }: TicketsScreenProps) {
   const guest = await dbGuest.getGuestById(params.guestId);
+  const groupMemberNames = guest.group?.members.reduce((_groupMembers, member) => {
+    if (member.name === guest.name) return _groupMembers;
+    return [
+      ..._groupMembers,
+      member.name,
+    ]
+  }, []).join(", ");
 
   return (
     <div>
       <h1>Convites de: {guest.name}</h1>
-      <p>Você tem direito a {guest.tickets.length} convite {guest.tickets.length > 1 && "s"} e a companhia de {guest.group.members.reduce((_groupMembers, member) => {
-        if (member.name === guest.name) return _groupMembers;
-        return [
-          ..._groupMembers,
-          member.name,
-        ]
-      }, []).join(", ")}</p>
+      <p>Você tem direito a {guest.tickets.length} convite {guest.tickets.length > 1 && "s"} {groupMemberNames && `e a companhia de ${groupMemberNames}`}</p>
       {guest.confirmed && (
         <>
           <h2>Presença confirmada: {guest.confirmed ? "✅" : "❌"}</h2>
-          <TicketList tickets={guest.tickets} groupMembers={guest.group.members} />
+          <TicketList tickets={guest.tickets} groupMembers={guest.group?.members} />
           <ul>
             <li>
               <Button href="/gifts">
