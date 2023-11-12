@@ -10,6 +10,10 @@ import {
   TableBody,
   TableCell,
   Separator,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
 } from "@src/components";
 import { maskId } from "@infra/str";
 import { dbGuest } from "@src/db/guest";
@@ -29,8 +33,8 @@ export default async function RegistrationScreen() {
 
   const stats = [
     { name: 'Total Tickets', stat: tickets.length, change: `${givenTickets}/${tickets.length}`, limit: givenTickets < tickets.length ? 'avaiable' : 'soldout' },
-    { name: 'Mario', stat: totalGuestsInvitedBy.husband, change: `${totalGuestsInvitedBy.husband}/${tickets.length / 2}`, limit: totalGuestsInvitedBy.husband < tickets.length / 2 ? 'avaiable' : 'soldout' },
     { name: 'Amanda', stat: totalGuestsInvitedBy.wife, change: `${totalGuestsInvitedBy.wife}/${tickets.length / 2}`, limit: totalGuestsInvitedBy.wife < tickets.length / 2 ? 'avaiable' : 'soldout' },
+    { name: 'Mario', stat: totalGuestsInvitedBy.husband, change: `${totalGuestsInvitedBy.husband}/${tickets.length / 2}`, limit: totalGuestsInvitedBy.husband < tickets.length / 2 ? 'avaiable' : 'soldout' },
   ];
 
   return (
@@ -71,86 +75,93 @@ export default async function RegistrationScreen() {
 
       <Separator className="my-4" />
 
-      <Text tag="h2" className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight">
-        All Guests
-      </Text>
+      <Tabs defaultValue="guests" className="flex flex-col items-center justify-center">
+        <TabsList>
+          <TabsTrigger value="guests">Guests</TabsTrigger>
+          <TabsTrigger value="groups">Groups</TabsTrigger>
+        </TabsList>
+        <TabsContent value="guests" className="w-full">
+          <Text tag="h2" className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight">
+            All Guests
+          </Text>
 
-      <Table>
-        <TableCaption>A list of the wedding guests.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>#</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Contact</TableHead>
-            <TableHead>Tickets</TableHead>
-            <TableHead>Invited By</TableHead>
-            <TableHead>Confirmed</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {guests.map(guest => (
-            <TableRow key={guest.id}>
-              <TableCell>{maskId(guest.id)}</TableCell>
-              <TableCell>{guest.name} {guest.underAge && `(👶)`}</TableCell>
-              <TableCell>
-                {guest.email}
-                <br />
-                {guest.phone}
-              </TableCell>
-              <TableCell>
-                {guest.underAge && (
-                  "N/A"
-                )}
-                {!guest.underAge && (
-                  <Button href={`/tickets/${guest.id}`}>
-                    {guest.tickets.length}
-                  </Button>
-                )}
-              </TableCell>
-              <TableCell>
-                {guest.inviter.name}
-              </TableCell>
-              <TableCell className="text-center">
-                {guest.confirmed ? "✅" : "🚧"}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-
-      <Separator className="my-4" />
-
-      <Text tag="h2" className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight">
-        Groups
-      </Text>
-      <Table>
-        <TableCaption>A list of the wedding guests groups.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>#</TableHead>
-            <TableHead>Group Members</TableHead>
-            <TableHead className="text-center">Confirmation Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {groups.map((group, index) => (
-            <TableRow>
-              <TableCell>
-                {(index + 1).toString().padStart(2)}
-              </TableCell>
-              <TableCell>
-                {group.map(guest => guest.name).join(", ")}
-              </TableCell>
-              <TableCell className="text-center">
-                {guests.reduce((confirmed, guest) => {
-                  if (confirmed) return true;
-                  return guest.confirmed;
-                }, false) ? "✅" : "🚧"}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          <Table>
+            <TableCaption>A list of the wedding guests.</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>#</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead>Tickets</TableHead>
+                <TableHead>Invited By</TableHead>
+                <TableHead>Confirmed</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {guests.map(guest => (
+                <TableRow key={guest.id}>
+                  <TableCell>{maskId(guest.id)}</TableCell>
+                  <TableCell>{guest.name} {guest.underAge && `(👶)`}</TableCell>
+                  <TableCell>
+                    {guest.email}
+                    <br />
+                    {guest.phone}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {guest.underAge && (
+                      "N/A"
+                    )}
+                    {!guest.underAge && (
+                      <Button href={`/tickets/${guest.id}`} variant="ghost">
+                        {guest.tickets.length}
+                      </Button>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {guest.inviter.name}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {guest.confirmed ? "✅" : "🚧"}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TabsContent>
+        <TabsContent value="groups" className="w-full">
+          <Text tag="h2" className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight">
+            Groups
+          </Text>
+          <Table>
+            <TableCaption>A list of the wedding guests groups.</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>#</TableHead>
+                <TableHead>Group Members</TableHead>
+                <TableHead className="text-center">Confirmation Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {groups.map((group, index) => (
+                <TableRow>
+                  <TableCell>
+                    {(index + 1).toString().padStart(2)}
+                  </TableCell>
+                  <TableCell>
+                    {group.map(guest => guest.name).join(", ")}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {guests.reduce((confirmed, guest) => {
+                      if (confirmed) return true;
+                      return guest.confirmed;
+                    }, false) ? "✅" : "🚧"}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TabsContent>
+      </Tabs>
     </Box>
   );
 }
