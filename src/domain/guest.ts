@@ -19,6 +19,12 @@ const guestSkeleton = {
   inviter: s.object({
     name: s.string(),
   }).optional().nullable(),
+  group: s.object({
+    id: s.string(),
+    members: s.array(s.object({
+      name: s.string(),
+    })),
+  }).optional().nullable(),
 };
 
 export const Guest = s.object(guestSkeleton).required();

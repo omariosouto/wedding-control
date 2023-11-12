@@ -13,6 +13,11 @@ async function getAllGuests(): Promise<Guest[]> {
     include: {
       tickets: true,
       inviter: true,
+      group: {
+        include: {
+          members: true,
+        }
+      }
     },
     where: {
       NOT: {
