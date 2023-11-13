@@ -6,6 +6,8 @@ import { adapterGuest } from "@src/adapter/guest";
 export const dbGuest = {
   getAllGuests,
   getGuestById,
+  setAsConfirmed,
+  cancelConfirmation,
 }
 
 async function getAllGuests(): Promise<Guest[]> {
@@ -46,4 +48,22 @@ async function getGuestById(id: Uuid): Promise<Guest> {
     },
   });
   return Guest.parse(dbGuest);
+}
+
+async function setAsConfirmed(id: Uuid): Promise<void> {
+  await db.guest.update({
+    where: { id },
+    data: {
+      confirmed: true,
+    }
+  });
+}
+
+async function cancelConfirmation(id: Uuid): Promise<void> {
+  await db.guest.update({
+    where: { id },
+    data: {
+      confirmed: false,
+    }
+  });
 }

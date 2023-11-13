@@ -1,6 +1,7 @@
 import { dbGuest } from "@src/db/guest";
 import { Box, Button } from "@src/components";
 import { TicketList } from "./components/Ticket";
+import { redirect } from "next/navigation";
 
 interface TicketsScreenProps {
   params: {
@@ -35,6 +36,22 @@ export default async function TicketsScreen({ params }: TicketsScreenProps) {
               <Button href="/gifts">
                 Ver a Lista de presentes
               </Button>
+            </li>
+            <li>
+              <form>
+                <Button
+                  type="submit"
+                  variant="destructive"
+                  size="sm"
+                  formAction={async () => {
+                    "use server";
+                    await dbGuest.cancelConfirmation(guest.id);
+                    redirect(`/tickets/${guest.id}?canceled=true`);
+                  }}
+                >
+                  Cancelar Confirmação
+                </Button>
+              </form>
             </li>
           </ul>
         </>
