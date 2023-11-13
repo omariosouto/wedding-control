@@ -5,6 +5,8 @@ interface Tag {
   className?: string;
   size?: React.ComponentProps<typeof UIButton>["size"];
   variant?: React.ComponentProps<typeof UIButton>["variant"];
+  onClick?: React.ComponentProps<typeof UIButton>["onClick"];
+  formAction?: React.ComponentProps<typeof UIButton>["formAction"];
   children: React.ReactNode;
 }
 
